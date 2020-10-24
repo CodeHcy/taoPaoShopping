@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<!--        声明文件位置          -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+<!--    数据库连接池-->
+    <bean id="myDataSources" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.Diver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.name}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="${jdbc.Max}"/>
+    </bean>
+
+<!--     创建Sqlsession对象 -->
+    <bean id="sqlSessionFactroy" class="org.mybatis.spring.SqlSessionFactoryBean">
+<!--     把连接池给datasource属性-->
+        <property name="dataSource" ref="myDataSources"/>
+<!--     获取mybatis朱配置文件   -->
+        <property name="configLocation" value="classpath:myBatis.xml"/>
+    </bean>
+
+
+<!--     创建dao对象 使用Sqlsession的getMapper(StudentDao.class)
+         MapperScannerConfigurer在内部调用getMapper为每个dao接口创建代理对象-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+<!--      指定SqlsessionFactroy对象的id    -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactroy"/>
+<!--        指定包名    MapperScannerConfigurer会扫描包中的每一个接口，都执行一次getMapping方法
+            得到每一个接口的dao对象  创建好的对象放在Spring容器中 名字默认接口名首字母小写-->
+        <property name="basePackage" value="com.dao"/>
+    </bean>
+<!--  声明Service的注解 @Service注释的类所在的位置 -->
+    <context:component-scan base-package="com.service"/>
+<!--
+    <bean id="studentService" class="com.xawl.service.Impl.StudentServiceImpl">
+        <property name="studentDao" ref="IStudentDao"/>
+    </bean>-->
+
+    <!--    添加事务-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="myDataSources"/>
+    </bean>
+<!--        开启事务注册驱动-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+   <!-- &lt;!&ndash;    用ASpestJ配置事务&ndash;&gt;
+    <tx:advice id="myAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="buyGoods" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    &lt;!&ndash;    配置Aop切面&ndash;&gt;
+    <aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* com.xawl.service.Impl.BuyServiceImpl.buyGoods(..))"/>
+        <aop:advisor advice-ref="myAdvice" pointcut-ref="pointcut"/>
+    </aop:config>-->
+</beans>

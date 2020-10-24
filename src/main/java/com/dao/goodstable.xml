@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.goodstable">
+    <select id="qureyGoods" resultType="com.domain.Goods">
+        select id,gname,goprice,grprice,gstore,gpicture,goodstype_id from goodstable order by id desc
+    </select>
+    <insert id="addGoods" >
+        insert into goodstable(gname,goprice,grprice,gstore,gpicture,goodstype_id)values (#{gname},#{goprice},#{grprice},#{gstore},#{gpicture},#{goodstype_id})
+    </insert>
+    <delete id="deleteGood">
+        delete from goodstable where id = ${id}
+    </delete>
+    <select id="selectAGoods" resultType="com.domain.Goods">
+        select id,gname,goprice,grprice,gstore,gpicture,goodstype_id from goodstable where id=#{id}
+    </select>
+    <update id="updateGood">
+        update goodstable set gname=#{gname},goprice=#{goprice},grprice=#{grprice},gstore=#{gstore},gpicture=#{gpicture},goodstype_id=#{goodstype_id} where gname=#{gname}
+    </update>
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*) from goodstable
+    </select>
+    <select id="getImPath" resultType="java.lang.String">
+        select gpicture from goodstable where id=#{id}
+    </select>
+    <select id="ByTypeshows" resultType="com.domain.Goods">
+        select id,gname,goprice,grprice,gstore,gpicture,goodstype_id from goodstable where goodstype_id=#{id}
+    </select>
+    <select id="getATypeCount" resultType="java.lang.Integer">
+        select count(*) from goodstable where goodstype_id=#{id}
+    </select>
+    <update id="updategstore">
+        update goodstable set gstore=#{shoppingnum} where id=#{goodstable_id}
+    </update>
+    <select id="getgstore" resultType="java.lang.Integer">
+        select gstore from goodstable where id=#{goodstable_id}
+    </select>
+</mapper>
