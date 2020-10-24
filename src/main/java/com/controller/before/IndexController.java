@@ -40,6 +40,13 @@ public class IndexController {
     public String login(){
         return "before/login";
     }
+    @RequestMapping("/index/textLg.do")
+    @ResponseBody
+    public HashMap<String,String> Tlogin(HttpSession session){
+        HashMap<String,String> map = new HashMap<>();
+        map.put("userEmail", (String) session.getAttribute("userEmail"));
+        return map;
+    }
     @RequestMapping("/index/loginTest.do")
     public ModelAndView TestUser(String bemail, String bpwd,HttpSession session) throws BNameException {
         if (bemail == null||bpwd == null){

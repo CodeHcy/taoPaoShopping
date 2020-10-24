@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -99,10 +100,9 @@ public class UserCenterController {
         return map;
     }
     @RequestMapping("backLogin.do")
-    @ResponseBody
     public String backLogin(HttpServletRequest request){
         request.getSession().removeAttribute("userEmail");
         request.getSession().removeAttribute("sts");
-        return "成功退出";
+        return "before/login";
     }
 }

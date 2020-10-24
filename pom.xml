@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.xawl</groupId>
-  <artifactId>e-commerce_platform</artifactId>
+  <artifactId>taoPaoShopping</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
