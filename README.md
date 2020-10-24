@@ -1,2 +1,5 @@
 # taoPaoShopping
 用SSM框架实现的简单的购物商城项目
+推荐使用idea导入maven项目
+项目文件夹中用少部分用于测试的照片资源
+shop.sql文件是项目用的表以及一些用于测试的数据，需导入mysql数据库
